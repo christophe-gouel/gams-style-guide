@@ -339,7 +339,7 @@ k Goods;
 
 ### Pluralize ###
 
-Use plural forms if declaring several identifiers: use `Sets` not `Set`.
+GAMS has singular and plural forms for all declarations (`Set` and `Sets`, `Parameter` and `Parameters`, `Variable` and `Variables`, etc). Use plural forms if declaring several identifiers.
 
 ## Parentheses ##
 

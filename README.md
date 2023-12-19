@@ -237,9 +237,20 @@ $call mygamsfile.gms LogOption=3 output=mygamsfile.lst GDX=mygdx --method=3 --sc
 
 One exception is for object labels; it is OK to have long lines for labels since those are just informative text, not code.
 
+Break lines in macros by ending each line with `\`.
+
+``` gams
+* Good
+$macro laspeyres_price(SetSum, Price, Benchmark) \
+  (sum(SetSum, Price * Benchmark) / sum(SetSum, Benchmark)) $ sum(SetSum, Benchmark)
+
+* Bad
+$macro laspeyres_price(SetSum, Price, Benchmark) (sum(SetSum, Price * Benchmark) / sum(SetSum, Benchmark)) $ sum(SetSum, Benchmark)
+```
+
 ## Indentation ##
 
-Do not use tabs! Use 2 spaces for indentation. Indent also dollar control options if needed, which can be done by using the symbols `$$`:
+Do not use tabs! Use 2 spaces for indentation (options available in GAMS Studio in Settings/Editor & Log). Indent also dollar control options if needed, which can be done by using the symbols `$$`:
 
 ``` gams
 * Good
@@ -341,6 +352,14 @@ k Goods;
 
 GAMS has singular and plural forms for all declarations (`Set` and `Sets`, `Parameter` and `Parameters`, `Variable` and `Variables`, etc). Use plural forms if declaring several identifiers.
 
+### Universal set ###
+
+Avoid using the universal set `(*)`, especially for data input and parameters and variables entering models. It is acceptable to use the universal set for reporting results.
+
+### Careful use of $onMulti ###
+
+`$onMulti` allows to declare several times the same symbol. This should be used only locally, for well-motivated cases, and always be followed by `$offMulti`.
+
 ## Parentheses ##
 
 Refrain from using unbalanced parentheses in comments because doing so messes up with rainbow parentheses in code editors and parentheses matching.
@@ -405,6 +424,8 @@ _Other options:_
 - UPPERCASE if you like it when your code YELLS AT YOU.
 - lowercase if you are too lazy to add a few upper-case letters here and there.
 
+GAMS Studio allows to configure the default auto-completion (in Settings/Editor & Log) to camelcase, UPPERCASE, and lowercase. So, adjust the default to your choice. Do not mix the choice of cases, since this would be difficult to enforce inside a team.
+
 ``` gams
 * Good
 options limCol = 100;
@@ -441,11 +462,17 @@ Use `"`, not `'` for quoting text or set elements. The only exception is when th
 
 Use `#` for end-of-line comments for compatibility with Python and R, two languages with which GAMS is commonly used. Leave a space after `*` and `#`, and leave a space before the end-of-line comment.
 
+Do not use `****` in comments, because it messes up with searching for infeasible equations that are indicated by the same characters string.
+
 ## File names ##
 
 File names should be meaningful, end in `.gms` for files that can be compiled by GAMS (possibly following a restart), and end with `.inc` for files that cannot be compiled on themselves but must be called by other files. Avoid using special characters in file names, including spaces: stick with numbers, letters, -, and _.
 
-## Files called by `$batInclude` ##
+## Don't Repeat Yourself (DRY) ##
+
+The DRY principle applies to all programming language. However, it can be difficult at the beginning to apply it in GAMS because of the lack of possibility to define functions. Use macros (`$macro`), `$include`, and `$batInclude` to remove repetitions from your code. Use comments to clarify what is done by these commands.
+
+### Files called by `$batInclude` ###
 
 Files called by `$batInclude` should have named arguments rather than the default names. Use `$setArgs` to define the names.
 

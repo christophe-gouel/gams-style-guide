@@ -470,7 +470,7 @@ File names should be meaningful, end in `.gms` for files that can be compiled by
 
 ## Don't Repeat Yourself (DRY) ##
 
-The DRY principle applies to all programming language. However, it can be difficult at the beginning to apply it in GAMS because of the lack of possibility to define functions. Use macros (`$macro`), `$include`, and `$batInclude` to remove repetitions from your code. Use comments to clarify what is done by these commands.
+The DRY principle applies to all programming languages. However, it can be difficult at the beginning to apply it in GAMS because of the lack of possibility to define functions. Use macros (`$macro`), `$include`, and `$batInclude` to remove repetitions from your code. Use comments to clarify what is done by these commands.
 
 ### Files called by `$batInclude` ###
 

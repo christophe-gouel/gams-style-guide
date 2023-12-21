@@ -1,6 +1,6 @@
 # GAMS Style Guide #
 
-This file describes a style guide for the GAMS programming language. It takes inspiration from the [tidyverse style guide](https://style.tidyverse.org/) for the R programming language (with copied elements authorized by the associated [license](https://github.com/tidyverse/style/blob/main/LICENSE.md)). 
+This file describes a style guide for the GAMS programming language. It takes inspiration from the [tidyverse style guide](https://style.tidyverse.org/) for the R programming language (with copied elements authorized by the associated [license](https://github.com/tidyverse/style/blob/main/LICENSE.md)).
 
 This guide is necessarily opinionated in order to provide consistency. Feel free to adjust it to the style you want to adopt in your research group.
 
@@ -22,22 +22,22 @@ Always put a space after a comma, except for the commas separating sets in a GAM
 ``` gams
 * Good
 Alias (i, j);
-eq_p.. p =e= sum((i,j), sh_g(i,j) * p_g(i,j)**(1 - subst))**(1 / (1 - subst));
+eq_p .. p =e= sum((i,j), sh_g(i,j) * p_g(i,j)**(1 - subst))**(1 / (1 - subst));
 z(i,j) = yes $ (not sameAs(i, j));
 
-* Bad  
+* Bad
 Alias (i,j);
-eq_p.. p =e= sum((i, j),sh_g(i, j) * p_g(i, j)**(1 - subst))**(1 / (1 - subst));
+eq_p .. p =e= sum((i, j),sh_g(i, j) * p_g(i, j)**(1 - subst))**(1 / (1 - subst));
 z(i,j) = yes $ (not sameAs(i,j));
 ```
 
 ### Infix operators ###
 
-Most infix operators (`==`, `+`, `-`, `/`, `=e=`, etc.) should always be surrounded by spaces. This rule also applies to `$` used for conditional assignments.
+Most infix operators (`==`, `+`, `-`, `/`, `=e=`, etc.) should always be surrounded by spaces. This rule also applies to `$` used for conditional assignments and to the two dots `..` used for defining equations.
 
 ``` gams
 # Good
-eq_p.. p =e= sum((i,j), sh_g(i,j) * p_g(i,j)**(1 - subst))**(1 / (1 - subst));
+eq_p .. p =e= sum((i,j), sh_g(i,j) * p_g(i,j)**(1 - subst))**(1 / (1 - subst));
 z(i,j) = yes $ (not sameAs(i, j));
 
 # Bad
@@ -82,7 +82,7 @@ Sets
     / element1
       element2 /
 ;
-  
+
 * Bad
 Sets
   t/1*10/
@@ -132,7 +132,7 @@ There is one exception: place a space before `()` when used with flow control op
 ``` gams
 # Good
 for (i = 1 to 1000 by 10,
-  display i;  
+  display i;
 );
 if (x <= 0,
   y = 1;
@@ -144,7 +144,7 @@ else
 
 # Bad
 for(i = 1 to 1000 by 10,
-  display i;  
+  display i;
 );
 if(x <= 0,
   y = 1;
@@ -174,7 +174,7 @@ for (i = 1 to 1000 by 10, z = z + i;);
 x.lo = -inf; x.up = inf;
 
 * Bad
-y = 1; z = 2;  
+y = 1; z = 2;
 ```
 
 ## Blank lines ##
@@ -185,14 +185,14 @@ Leave a blank line after each declaration block (`Alias`, `Set`, `Parameter`, `E
 * Good
 Alias (i, j);
 
-eq_p.. p =e= sum((i,j), sh_g(i,j) * p_g(i,j)**(1 - subst))**(1 / (1 - subst));
+eq_p .. p =e= sum((i,j), sh_g(i,j) * p_g(i,j)**(1 - subst))**(1 / (1 - subst));
 
 z(i,j) = yes $ (not sameAs(i, j));
 
 * Bad
 Alias (i, j);
-eq_p.. p =e= sum((i,j), sh_g(i,j) * p_g(i,j)**(1 - subst))**(1 / (1 - subst));
-z(i,j) = yes $ (not sameAs(i, j));  
+eq_p .. p =e= sum((i,j), sh_g(i,j) * p_g(i,j)**(1 - subst))**(1 / (1 - subst));
+z(i,j) = yes $ (not sameAs(i, j));
 ```
 
 ## Long lines ##
@@ -208,19 +208,23 @@ To break lines in equations, use the standard mathematical convention that the o
 
 ``` gams
 * Good
-eq_p_cpi..
+eq_p_cpi ..
   p_cpi =e=
   sum((i,j), sh_good(i,j) * p_good(i,j)**(1 - subst))**(1 / (1 - subst)) $ CES
-  + prod((i,j), p_good(i,j)**sh_good(i,j)) $ CobbDouglas;
+  + prod((i,j), p_good(i,j)**sh_good(i,j)) $ CobbDouglas
+;
 
 * Also fine
+eq_p_cpi ..
   p_cpi
   =e= sum((i,j), sh_good(i,j) * p_good(i,j)**(1 - subst))**(1 / (1 - subst)) $ CES
-  + prod((i,j), p_good(i,j)**sh_good(i,j)) $ CobbDouglas;
+  + prod((i,j), p_good(i,j)**sh_good(i,j)) $ CobbDouglas
+;
 
 * Bad
-eq_p_cpi..
-  p_cpi =e= sum((i,j), sh_good(i,j) * p_good(i,j)**(1 - subst))**(1 / (1 - subst)) $ CES + prod((i,j), p_good(i,j)**sh_good(i,j)) $ CobbDouglas;
+eq_p_cpi ..
+  p_cpi =e= sum((i,j), sh_good(i,j) * p_good(i,j)**(1 - subst))**(1 / (1 - subst)) $ CES + prod((i,j), p_good(i,j)**sh_good(i,j)) $ CobbDouglas
+;
 ```
 
 In case of long file calls (exceeding the maximum number of columns), break the call by putting the options in compile-time variables, in a [txt parameter file](https://www.gams.com/latest/docs/UG_GamsCall.html#UG_GamsCall_SecondaryParameterFile), or in a [YAML configuration file](https://www.gams.com/latest/docs/UG_GamsCall.html#UG_GamsCall_GAMSConfigYAML).
@@ -280,6 +284,20 @@ $if not set nullFile $abort %system.fileSys% not recognized
 $else
 $set nullFile
 $endIf
+
+* Also bad
+Parameters
+  a
+$gdxLoad mygdx.gdx a
+b
+;
+$ifThen not %gams.logOption% == 3
+$  ifI %system.fileSys% == UNIX  $set nullFile > /dev/null
+$  ifI %system.fileSys% == MSNT  $set nullFile > nul
+$  if not set nullFile $abort %system.fileSys% not recognized
+$else
+$  set nullFile
+$endIf
 ```
 
 ### Nested indents ###
@@ -288,22 +306,22 @@ Use nested indentation if inside parentheses, and indent the closing parentheses
 
 ``` gams
 * Good
-eq_p..
+eq_p ..
   p =e= sum((i,j),
     sh_g(i,j) * p_g(i,j)**(1 - subst)
   )**(1 / (1 - subst))
 ;
 
 * Bad
-eq_p..
+eq_p ..
   p =e= sum((i,j),
   sh_g(i,j) * p_g(i,j)**(1 - subst))**(1 / (1 - subst))
 ;
-eq_p..
+eq_p ..
   p =e= sum((i,j),
     sh_g(i,j) * p_g(i,j)**(1 - subst)
            )**(1 / (1 - subst))
-;  
+;
 ```
 
 ### Data entry with / / ###
@@ -316,15 +334,14 @@ Set
   mylongset "With an even longer label preventing the data entry on the line"
     / element1, element 2 /
 ;
-  
-* Bad  
+
+* Bad
 Set
   mylongset "With an even longer label preventing the data entry on the line"
   / element1, element 2 /
 ;
-  
-```
 
+```
 
 ## Declaration statement ##
 
@@ -371,7 +388,7 @@ Refrain from using unbalanced parentheses in comments because doing so messes up
 * Bad
 * a) My section title
 ```
- 
+
 Do not use square brackets to replace parentheses; use only parentheses.
 
 ``` gams
@@ -408,7 +425,7 @@ Here is a suggestion of types for use in computable general and partial equilibr
 It is possible to compose types when relevant, for example, for equations and macros:
 
 ``` gams
-eq_p_cpi.. p_cpi =e= ...;
+eq_p_cpi .. p_cpi =e= ...;
 ```
 
 The explicit names should follow a standard casing convention in programming. Here, camelCase (with a lower-case first letter) is proposed for its conciseness and consistency with the default used for GAMS commands in GAMS Studio.
@@ -430,7 +447,7 @@ GAMS Studio allows to configure the default auto-completion (in Settings/Editor 
 * Good
 options limCol = 100;
 Positive Variable p_cpi;
-p_cpi.l = 1; 
+p_cpi.l = 1;
 
 * Bad
 OPTIONS limcol = 100;
@@ -445,12 +462,12 @@ Place semicolons at the end of a code block without adding a space before it. If
 
 ``` gams
 * Good
-eq_p..
+eq_p ..
   p =e= sum((i,j), sh_g(i,j) * p_g(i,j)**(1 - subst))**(1 / (1 - subst))
 ;
 
 * Bad
-eq_p..
+eq_p ..
   p =e= sum((i,j), sh_g(i,j) * p_g(i,j)**(1 - subst))**(1 / (1 - subst)) ;
 ```
 

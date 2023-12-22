@@ -286,11 +286,6 @@ $set nullFile
 $endIf
 
 * Also bad
-Parameters
-  a
-$gdxLoad mygdx.gdx a
-b
-;
 $ifThen not %gams.logOption% == 3
 $  ifI %system.fileSys% == UNIX  $set nullFile > /dev/null
 $  ifI %system.fileSys% == MSNT  $set nullFile > nul
@@ -349,20 +344,23 @@ When declaring new identifiers (sets, parameters, variables, and equations), the
 
 Strive to always enter explanatory text for all objects.
 
+Always specify object dimensions in declaration. Declare scalar parameters separately from indexed ones in a `Scalar` block statement.
+
 ``` gams
 * Good
 Sets
   i Countries
   k Goods
 ;
-
-* Also fine
-Set i Countries;
+Parameter p(i) Price;
+p(i) = 1;
 
 * Bad
 Sets
 i Countries
 k Goods;
+Parameter p Price;
+p(i) = 1;
 ```
 
 ### Pluralize ###
@@ -484,6 +482,26 @@ Do not use `****` in comments, because it messes up with searching for infeasibl
 ## File names ##
 
 File names should be meaningful, end in `.gms` for files that can be compiled by GAMS (possibly following a restart), and end with `.inc` for files that cannot be compiled on themselves but must be called by other files. Avoid using special characters in file names, including spaces: stick with numbers, letters, -, and _.
+
+## Platform-independent code ##
+
+Strive to make your code platform independent:
+
+- Use `/` to separate folders, not `\` which only works on Windows.
+- Respect case of filenames (or avoid upper-case letters in filenames): filenames are case-insensitive on Windows by default but not on UNIX-based systems.
+- Avoid using tools that works only on Windows. For example, to exchange data with Excel files use [GAMS Connect](https://www.gams.com/latest/docs/UG_GAMSCONNECT.html "har2gdx.exe my_harfile.har my_gdxfile.gdx") instead of `gdxxrw.exe`.
+- If you cannot avoid using Windows-specific tools such as `har2gdx.exe`, test for the operating system and abort early.
+
+``` gams
+* Good
+$include my_folder/my_file.inc
+$if %system.fileSys% == UNIX $abort This code works only on Windows.
+$call "har2gdx.exe my_harfile.har my_gdxfile.gdx"
+
+* Bad
+$include my_folder\my_file.inc
+$call "har2gdx.exe my_harfile.har my_gdxfile.gdx"
+```
 
 ## Don't Repeat Yourself (DRY) ##
 

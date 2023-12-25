@@ -22,12 +22,12 @@ Always put a space after a comma, except for the commas separating sets in a GAM
 ``` gams
 * Good
 Alias (i, j);
-eq_p .. p =e= sum((i,j), sh_g(i,j) * p_g(i,j)**(1 - subst))**(1 / (1 - subst));
+eq_p .. p =e= sum((i,j), sh_g(i,j) * p_g(i,j)**(1 - sig))**(1 / (1 - sig));
 z(i,j) = yes $ (not sameAs(i, j));
 
 * Bad
 Alias (i,j);
-eq_p .. p =e= sum((i, j),sh_g(i, j) * p_g(i, j)**(1 - subst))**(1 / (1 - subst));
+eq_p .. p =e= sum((i, j),sh_g(i, j) * p_g(i, j)**(1 - sig))**(1 / (1 - sig));
 z(i,j) = yes $ (not sameAs(i,j));
 ```
 
@@ -37,11 +37,11 @@ Most infix operators (`==`, `+`, `-`, `/`, `=e=`, etc.) should always be surroun
 
 ``` gams
 # Good
-eq_p .. p =e= sum((i,j), sh_g(i,j) * p_g(i,j)**(1 - subst))**(1 / (1 - subst));
+eq_p .. p =e= sum((i,j), sh_g(i,j) * p_g(i,j)**(1 - sig))**(1 / (1 - sig));
 z(i,j) = yes $ (not sameAs(i, j));
 
 # Bad
-eq_p.. p=e=sum((i,j), sh_g(i,j)*p_g(i,j)**(1-subst))**(1/(1-subst));
+eq_p.. p=e=sum((i,j), sh_g(i,j)*p_g(i,j)**(1-sig))**(1/(1-sig));
 z(i,j) = yes$(not sameAs(i, j));
 ```
 
@@ -60,6 +60,7 @@ Set t / 1 * 100 /;
 delta = - alpha;
 z = x ** 2 + y ** 2;
 ```
+
 - Operators used on sets
 
 ``` gams
@@ -121,10 +122,10 @@ Do not put spaces inside or outside parentheses, except for the above reasons.
 
 ``` gams
 * Good
-p_cpi = sum(i, a(i) * p(i)**(1 - sigma))**(1 / (1 - sigma));
+p_cpi = sum(i, a(i) * p(i)**(1 - sig))**(1 / (1 - sig));
 
 ** Bad
-p_cpi = sum (i, a(i) * p(i)**(1 - sigma))**(1 / (1 - sigma) );
+p_cpi = sum (i, a(i) * p(i)**(1 - sig))**(1 / (1 - sig) );
 ```
 
 There is one exception: place a space before `()` when used with flow control operations `if`, `for`, `loop`, or `while`.
@@ -185,13 +186,13 @@ Leave a blank line after each declaration block (`Alias`, `Set`, `Parameter`, `E
 * Good
 Alias (i, j);
 
-eq_p .. p =e= sum((i,j), sh_g(i,j) * p_g(i,j)**(1 - subst))**(1 / (1 - subst));
+eq_p .. p =e= sum((i,j), sh_g(i,j) * p_g(i,j)**(1 - sig))**(1 / (1 - sig));
 
 z(i,j) = yes $ (not sameAs(i, j));
 
 * Bad
 Alias (i, j);
-eq_p .. p =e= sum((i,j), sh_g(i,j) * p_g(i,j)**(1 - subst))**(1 / (1 - subst));
+eq_p .. p =e= sum((i,j), sh_g(i,j) * p_g(i,j)**(1 - sig))**(1 / (1 - sig));
 z(i,j) = yes $ (not sameAs(i, j));
 ```
 
@@ -210,20 +211,20 @@ To break lines in equations, use the standard mathematical convention that the o
 * Good
 eq_p_cpi ..
   p_cpi =e=
-  sum((i,j), sh_good(i,j) * p_good(i,j)**(1 - subst))**(1 / (1 - subst)) $ CES
+  sum((i,j), sh_good(i,j) * p_good(i,j)**(1 - sig))**(1 / (1 - sig)) $ CES
   + prod((i,j), p_good(i,j)**sh_good(i,j)) $ CobbDouglas
 ;
 
 * Also fine
 eq_p_cpi ..
   p_cpi
-  =e= sum((i,j), sh_good(i,j) * p_good(i,j)**(1 - subst))**(1 / (1 - subst)) $ CES
+  =e= sum((i,j), sh_good(i,j) * p_good(i,j)**(1 - sig))**(1 / (1 - sig)) $ CES
   + prod((i,j), p_good(i,j)**sh_good(i,j)) $ CobbDouglas
 ;
 
 * Bad
 eq_p_cpi ..
-  p_cpi =e= sum((i,j), sh_good(i,j) * p_good(i,j)**(1 - subst))**(1 / (1 - subst)) $ CES + prod((i,j), p_good(i,j)**sh_good(i,j)) $ CobbDouglas
+  p_cpi =e= sum((i,j), sh_good(i,j) * p_good(i,j)**(1 - sig))**(1 / (1 - sig)) $ CES + prod((i,j), p_good(i,j)**sh_good(i,j)) $ CobbDouglas
 ;
 ```
 
@@ -245,11 +246,11 @@ Break lines in macros by ending each line with `\`.
 
 ``` gams
 * Good
-$macro laspeyres_price(SetSum, Price, Benchmark) \
-  (sum(SetSum, Price * Benchmark) / sum(SetSum, Benchmark)) $ sum(SetSum, Benchmark)
+$macro m_p_laspeyres(setSum, price, benchmark) \
+  (sum(setSum, price * benchmark) / sum(setSum, benchmark)) $ sum(setSum, benchmark)
 
 * Bad
-$macro laspeyres_price(SetSum, Price, Benchmark) (sum(SetSum, Price * Benchmark) / sum(SetSum, Benchmark)) $ sum(SetSum, Benchmark)
+$macro m_p_laspeyres(setSum, price, benchmark) (sum(setSum, price * benchmark) / sum(setSum, benchmark)) $ sum(setSum, benchmark)
 ```
 
 ## Indentation ##
@@ -285,7 +286,7 @@ $else
 $set nullFile
 $endIf
 
-* Also bad
+* Better but also bad
 $ifThen not %gams.logOption% == 3
 $  ifI %system.fileSys% == UNIX  $set nullFile > /dev/null
 $  ifI %system.fileSys% == MSNT  $set nullFile > nul
@@ -303,19 +304,19 @@ Use nested indentation if inside parentheses, and indent the closing parentheses
 * Good
 eq_p ..
   p =e= sum((i,j),
-    sh_g(i,j) * p_g(i,j)**(1 - subst)
-  )**(1 / (1 - subst))
+    sh_g(i,j) * p_g(i,j)**(1 - sig)
+  )**(1 / (1 - sig))
 ;
 
 * Bad
 eq_p ..
   p =e= sum((i,j),
-  sh_g(i,j) * p_g(i,j)**(1 - subst))**(1 / (1 - subst))
+  sh_g(i,j) * p_g(i,j)**(1 - sig))**(1 / (1 - sig))
 ;
 eq_p ..
   p =e= sum((i,j),
-    sh_g(i,j) * p_g(i,j)**(1 - subst)
-           )**(1 / (1 - subst))
+    sh_g(i,j) * p_g(i,j)**(1 - sig)
+           )**(1 / (1 - sig))
 ;
 ```
 
@@ -371,7 +372,7 @@ GAMS has singular and plural forms for all declarations (`Set` and `Sets`, `Para
 
 Avoid using the universal set `(*)`, especially for data input and parameters and variables entering models. It is acceptable to use the universal set for reporting results.
 
-### Careful use of $onMulti ###
+### Careful use of `$onMulti` ###
 
 `$onMulti` allows to declare several times the same symbol. This should be used only locally, for well-motivated cases, and always be followed by `$offMulti`.
 
@@ -391,10 +392,10 @@ Do not use square brackets to replace parentheses; use only parentheses.
 
 ``` gams
 * Good
-p_cpi = sum(i, a(i) * p(i)**(1 - sigma))**(1 / (1 - sigma));
+p_cpi = sum(i, a(i) * p(i)**(1 - sig))**(1 / (1 - sig));
 
 * Bad
-p_cpi = sum(i, a(i) * p(i)**(1 - sigma))**[1 / (1 - sigma)];
+p_cpi = sum(i, a(i) * p(i)**(1 - sig))**[1 / (1 - sig)];
 ```
 
 ## Naming ##
@@ -416,7 +417,9 @@ Here is a suggestion of types for use in computable general and partial equilibr
 | `slope` | slopes of linear functions                            |
 | `n`     | integers indicating numbers of elements               |
 | `it`    | something used for iterating                          |
-| `tx`    | tax rates                                             |
+| `tr`    | tax rates                                             |
+| `tp`    | tax power (i.e., 1 + tax rate)                        |
+| `pt`    | aftex-tax prices                                      |
 | `eq`    | equations                                             |
 | `m`     | macros                                                |
 
@@ -426,9 +429,19 @@ It is possible to compose types when relevant, for example, for equations and ma
 eq_p_cpi .. p_cpi =e= ...;
 ```
 
+For macros, the `m` is not always necessary. If a macro is just used to play the role of a variable in an equation, it is OK to label it as the corresponding object.
+
 The explicit names should follow a standard casing convention in programming. Here, camelCase (with a lower-case first letter) is proposed for its conciseness and consistency with the default used for GAMS commands in GAMS Studio.
 
 _Other option:_ snake\_case is slightly more readable than camelCase, but occupies more space, which can be an issue in big projects with many objects to name.
+
+``` gams
+* Good
+eq_pt_finalGood(s) .. pt_finalGood(s) = tp_finalGood(s) * p_finalGood(s);
+
+* Bad
+eq_pricegoodaftertax(s) .. pricefinalgoodaftertax(s) = (1 + taxfinalgood(s)) * pricefinalgood(s);
+```
 
 ## Case of text ##
 
@@ -452,6 +465,7 @@ OPTIONS limcol = 100;
 positive variable p_cpi;
 p_cpi.L = 1;
 ```
+
 If you are worried that lower-case `l` could be confused with `1`, adopt a good programming font such as [Fira Code](https://github.com/tonsky/FiraCode) or [JetBrains Mono](https://www.jetbrains.com/fr-fr/lp/mono/).
 
 ## Semicolons ##
@@ -461,13 +475,15 @@ Place semicolons at the end of a code block without adding a space before it. If
 ``` gams
 * Good
 eq_p ..
-  p =e= sum((i,j), sh_g(i,j) * p_g(i,j)**(1 - subst))**(1 / (1 - subst))
+  p =e= sum((i,j), sh_g(i,j) * p_g(i,j)**(1 - sig))**(1 / (1 - sig))
 ;
 
 * Bad
 eq_p ..
-  p =e= sum((i,j), sh_g(i,j) * p_g(i,j)**(1 - subst))**(1 / (1 - subst)) ;
+  p =e= sum((i,j), sh_g(i,j) * p_g(i,j)**(1 - sig))**(1 / (1 - sig));
 ```
+
+The semicolon at the end of a statement can be omitted if a new GAMS keyword follows. Do not use this option, because the resulting code would be less readable and errors could be introduced if the keyword is replaced by a different type of statement.
 
 ## Quotes ##
 
@@ -488,7 +504,7 @@ File names should be meaningful, end in `.gms` for files that can be compiled by
 Strive to make your code platform independent:
 
 - Use `/` to separate folders, not `\` which only works on Windows.
-- Respect case of filenames (or avoid upper-case letters in filenames): filenames are case-insensitive on Windows by default but not on UNIX-based systems.
+- Respect case of filenames (or avoid upper-case letters in filenames): filenames are case-insensitive on MacOS and Windows by default but not on Linux.
 - Avoid using tools that works only on Windows. For example, to exchange data with Excel files use [GAMS Connect](https://www.gams.com/latest/docs/UG_GAMSCONNECT.html "har2gdx.exe my_harfile.har my_gdxfile.gdx") instead of `gdxxrw.exe`.
 - If you cannot avoid using Windows-specific tools such as `har2gdx.exe`, test for the operating system and abort early.
 

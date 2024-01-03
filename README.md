@@ -1,6 +1,6 @@
 # GAMS Style Guide #
 
-This file describes a style guide for the GAMS programming language. It takes inspiration from the [tidyverse style guide](https://style.tidyverse.org/) for the R programming language (with copied elements authorized by the associated [license](https://github.com/tidyverse/style/blob/main/LICENSE.md)).
+This file describes a comprehensive style guide for the GAMS (General Algebraic Modeling System) programming language. It provides a set of standards and best practices for writing clear, maintainable, and consistent code. It has been inspired by the [tidyverse style guide](https://style.tidyverse.org/) for the R programming language (with copied elements authorized by the associated [license](https://github.com/tidyverse/style/blob/main/LICENSE.md)).
 
 This guide is necessarily opinionated in order to provide consistency. Feel free to adjust it to the style you want to adopt in your research group.
 
@@ -519,9 +519,41 @@ $include my_folder\my_file.inc
 $call "har2gdx.exe my_harfile.har my_gdxfile.gdx"
 ```
 
-## Don't Repeat Yourself (DRY) ##
+## Code organization ##
 
-The DRY principle applies to all programming languages. However, it can be difficult at the beginning to apply it in GAMS because of the lack of possibility to define functions. Use macros (`$macro`), `$include`, and `$batInclude` to remove repetitions from your code. Use comments to clarify what is done by these commands.
+Proper code organization is pivotal to the maintainability, readability, and scalability of GAMS projects.
+
+### Organizing Code into Separate Files ###
+
+Separating GAMS code into multiple files serves several practical purposes:
+
+- **Modularity**: (While not expanded upon here, modularity is a crucial aspect of model large-scale modeling projects.)
+- **Operational Efficiency**: Distinct phases of the modeling process, such as simulation runs and result extraction, benefit from being in separate files. For instance, after running simulations, you might need to compute new indicators to interpret the results more clearly. If simulations and result processing are in separate files, you can modify the latter without rerunning the former. This is also relevant for dynamic models with time-consuming baseline simulations for which the baseline simulations should be separated from the counterfactual simulations. Utilize the [save and restart feature](https://www.gams.com/45/docs/UG_SaveRestart.html) to efficiently manage state continuity across different running stages.
+- **Brevity and Clarity**: Lengthy script files can be overwhelming and difficult to navigate. Grouping related segments of code into smaller, focused files that can be included in a master file through `$include` commands helps avoid monolithic and unwieldy script files.
+
+
+### Adhering to the DRY Principle ###
+
+"Don't Repeat Yourself" (DRY) is a fundamental coding principle applicable across all programming languages, aimed at reducing redundancy. While GAMS doesn't support traditional function definitions, there are other methods to achieve DRY:
+
+- Employ **macros** (`$macro`), `$include`, and `$batInclude` to eliminate code repetition.
+- Accompany these commands with **comments** to elucidate their purpose; without proper documentation, such commands can become obscure.
+
+To demonstrate applying the DRY principle in GAMS, consider the following:
+
+1. **Use Macros**: Define macros for repetitive tasks or calculations.
+    ``` gams
+	$macro m_p_laspeyres(setSum, price, benchmark) \
+      (sum(setSum, price * benchmark) / sum(setSum, benchmark)) $ sum(setSum, benchmark)
+    ```
+2. **Include Files**: Keep common sets, parameters, and scalars in a separate file to `$include` where needed.
+    ``` gams
+    $include 'common_sets.gms'
+    ```
+3. **Batch Includes**: Utilize `$batInclude` for repeating a sequence of commands across multiple contexts or scenarios.
+    ``` gams
+    $batInclude 'scenario_setup.gms' scenario1
+    ```
 
 ### Files called by `$batInclude` ###
 
@@ -535,6 +567,28 @@ x = %aa% - %bb% * %cc%;
 * Bad
 x = %1 - %2 * %3;
 ```
+
+## Tests ##
+
+Unlike many other programming languages, GAMS (General Algebraic Modeling System) programs tend to be less conducive to unit testing because models are typically intricate and can't be easily decomposed into smaller, testable units. Despite this challenge, testing parts of the model—especially those related to calibration and certain model properties—is both feasible and crucial.
+
+### Essential tests for GAMS models ###
+
+To ensure the reliability and accuracy of GAMS models, consider implementing the following tests:
+
+- **Summation Check**: Ensure that all shares add up to 1.
+- **Equilibrium Confirmation**:
+  - For models calibrated against an equilibrium, check that this equilibrium condition is satisfied.
+- **General Equilibrium Model Tests**:
+  - Verify **Walras' Law**, which states that the value of excess demand must be zero in an economy.
+  - Test for **Homogeneity of Degree Zero in Prices** to confirm that a change in the numeraire does not affect real variables.
+  - Assess **Real Homogeneity** as applicable, which pertains to the model's behavior when all factors are scaled up by the same proportion: this change should not lead to any change in relative prices in the absence of fixed costs and non-homothetic demand functions.
+
+### Automating tests with continuous integration ###
+
+Leveraging continuous integration tools enables the automation of these tests, ensuring they are executed upon each new commit. A practical guide to using continuous integration with GAMS is available in this [blog post](https://www.gams.com/blog/2023/08/modern-gams-teaching-gams-with-github-classroom/), which illustrates how to apply these principles for student models. This automated approach is also scalable to larger models.
+
+With the [GAMS Docker image](https://hub.docker.com/r/gams/gams), it's possible to spin up a new GAMS instance for each commit. This allows for the execution of tests on a simpler model variant, providing immediate feedback regarding the model’s expected behavior. By incorporating this into your testing workflow, you can significantly enhance the maintainability and quality of your GAMS programs.
 
 ## License ##
 

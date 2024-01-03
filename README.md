@@ -1,6 +1,6 @@
 # GAMS Style Guide #
 
-This file describes a comprehensive style guide for the GAMS (General Algebraic Modeling System) programming language. It provides a set of standards and best practices for writing clear, maintainable, and consistent code. It has been inspired by the [tidyverse style guide](https://style.tidyverse.org/) for the R programming language (with copied elements authorized by the associated [license](https://github.com/tidyverse/style/blob/main/LICENSE.md)).
+This file describes a comprehensive style guide for the [GAMS](https://www.gams.com/) (General Algebraic Modeling System) programming language. It provides a set of standards and best practices for writing clear, maintainable, and consistent code. It has been inspired by the [tidyverse style guide](https://style.tidyverse.org/) for the R programming language (with copied elements authorized by the associated [license](https://github.com/tidyverse/style/blob/main/LICENSE.md)).
 
 This guide is necessarily opinionated in order to provide consistency. Feel free to adjust it to the style you want to adopt in your research group.
 

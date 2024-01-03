@@ -527,7 +527,7 @@ Proper code organization is pivotal to the maintainability, readability, and sca
 
 Separating GAMS code into multiple files serves several practical purposes:
 
-- **Modularity**: (While not expanded upon here, modularity is a crucial aspect of model large-scale modeling projects.)
+- **Modularity**: (While not expanded upon here, modularity is a crucial aspect of many large-scale modeling projects.)
 - **Operational Efficiency**: Distinct phases of the modeling process, such as simulation runs and result extraction, benefit from being in separate files. For instance, after running simulations, you might need to compute new indicators to interpret the results more clearly. If simulations and result processing are in separate files, you can modify the latter without rerunning the former. This is also relevant for dynamic models with time-consuming baseline simulations for which the baseline simulations should be separated from the counterfactual simulations. Utilize the [save and restart feature](https://www.gams.com/45/docs/UG_SaveRestart.html) to efficiently manage state continuity across different running stages.
 - **Brevity and Clarity**: Lengthy script files can be overwhelming and difficult to navigate. Grouping related segments of code into smaller, focused files that can be included in a master file through `$include` commands helps avoid monolithic and unwieldy script files.
 
@@ -541,16 +541,16 @@ Separating GAMS code into multiple files serves several practical purposes:
 
 To demonstrate applying the DRY principle in GAMS, consider the following:
 
-1. **Use Macros**: Define macros for repetitive tasks or calculations.
+1. **Use macros**: Define macros for repetitive tasks or calculations.
     ``` gams
 	$macro m_p_laspeyres(setSum, price, benchmark) \
       (sum(setSum, price * benchmark) / sum(setSum, benchmark)) $ sum(setSum, benchmark)
     ```
-2. **Include Files**: Keep common sets, parameters, and scalars in a separate file to `$include` where needed.
+2. **Include files**: Keep common sets, parameters, and scalars in a separate file to `$include` where needed.
     ``` gams
     $include 'common_sets.gms'
     ```
-3. **Batch Includes**: Utilize `$batInclude` for repeating a sequence of commands across multiple contexts or scenarios.
+3. **Batch includes**: Utilize `$batInclude` for repeating a sequence of commands across multiple contexts or scenarios.
     ``` gams
     $batInclude 'scenario_setup.gms' scenario1
     ```

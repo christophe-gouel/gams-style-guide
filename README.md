@@ -48,28 +48,25 @@ z(i,j) = yes$(not sameAs(i, j));
 There are a few exceptions, which should never be surrounded by spaces:
 
 - The operators with high precedence: exponentiation `**`, unary `-`, unary `+`, and `*` used as a sequence operator.
-
-``` gams
-* Good
-Set t / 1*100 /;
-delta = -alpha;
-z = x**2 + y**2;
-
-* Bad
-Set t / 1 * 100 /;
-delta = - alpha;
-z = x ** 2 + y ** 2;
-```
-
+    ``` gams
+    * Good
+    Set t / 1*100 /;
+    delta = -alpha;
+    z = x**2 + y**2;
+    
+    * Bad
+    Set t / 1 * 100 /;
+    delta = - alpha;
+    z = x ** 2 + y ** 2;
+    ```
 - Operators used on sets
-
-``` gams
-* Good
-K(t+1) = (1 - delta) * K(t) + I(t);
-
-* Bad
-K(t + 1) = (1 - delta) * K(t) + I(t);
-```
+    ``` gams
+    * Good
+    K(t+1) = (1 - delta) * K(t) + I(t);
+    
+    * Bad
+    K(t + 1) = (1 - delta) * K(t) + I(t);
+    ```
 
 ### Data entry with / / ###
 

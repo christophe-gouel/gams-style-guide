@@ -13,7 +13,7 @@ Other available style guides for GAMS:
 
 ## Spacing ##
 
-Do not place spaces before comma and semicolon.
+Do not place spaces before commas and semicolons.
 
 ### Commas ###
 
@@ -195,7 +195,7 @@ z(i,j) = yes $ (not sameAs(i, j));
 
 ## Long lines ##
 
-Strive to limit your code to 90 characters per line. This size fits comfortably on a printed page with a reasonably sized font or on half a laptop screen (which allows you to compare 2 files side by side).
+Strive to limit your code to 90 characters per line. This size fits comfortably on  half a laptop screen with a reasonably sized font (which allows you to compare 2 files side by side or to have a running process along your code).
 
 _Other options:_
 
@@ -338,7 +338,7 @@ Set
 
 ## Declaration statement ##
 
-When declaring new identifiers (sets, parameters, variables, and equations), the keywords (`Set`, `Parameter`, etc) should be on a different line from the identifiers (except if there is only one identifier and its line does not exceed the maximum number of characters), each identifier shall be indented and on its line. The semicolon should be on its own, non-indented line.
+When declaring new identifiers (sets, parameters, variables, and equations), the keywords (`Set`, `Parameter`, etc.) should be on a different line from the identifiers (except if there is only one identifier and its line does not exceed the maximum number of characters), each identifier shall be indented and on its line. The semicolon should be on its own, non-indented line.
 
 Strive to always enter explanatory text for all objects.
 
@@ -363,7 +363,7 @@ p(i) = 1;
 
 ### Pluralize ###
 
-GAMS has singular and plural forms for all declarations (`Set` and `Sets`, `Parameter` and `Parameters`, `Variable` and `Variables`, etc). Use plural forms if declaring several identifiers.
+GAMS has singular and plural forms for all declarations (`Set` and `Sets`, `Parameter` and `Parameters`, `Variable` and `Variables`, etc.). Use plural forms if declaring several identifiers.
 
 ### Universal set ###
 
@@ -480,7 +480,7 @@ eq_p ..
   p =e= sum((i,j), sh_g(i,j) * p_g(i,j)**(1 - sig))**(1 / (1 - sig));
 ```
 
-The semicolon at the end of a statement can be omitted if a new GAMS keyword follows. Do not use this option, because the resulting code would be less readable and errors could be introduced if the keyword is replaced by a different type of statement.
+The semicolon at the end of a statement can be omitted if a new GAMS keyword follows. Do not use this option because the resulting code would be less readable, and errors could be introduced if a different type of statement replaces the keyword.
 
 ## Quotes ##
 
@@ -490,7 +490,7 @@ Use `"`, not `'` for quoting text or set elements. The only exception is when th
 
 Use `#` for end-of-line comments for compatibility with Python and R, two languages with which GAMS is commonly used. Leave a space after `*` and `#`, and leave a space before the end-of-line comment.
 
-Do not use `****` in comments, because it messes up with searching for infeasible equations that are indicated by the same characters string.
+Do not use `****` in comments because it messes up with searching for infeasible equations that are indicated by the same character string.
 
 ## File names ##
 
@@ -500,11 +500,11 @@ For filenames, privilege snake\_case and kebab-case to camelCase and PascalCase 
 
 ## Platform-independent code ##
 
-Strive to make your code platform independent:
+Strive to make your code platform-independent:
 
 - Use `/` to separate folders, not `\` which only works on Microsoft Windows.
-- Respect case of filenames (or avoid upper-case letters in filenames): filenames are case-insensitive on macOS and Microsoft Windows by default but not on Linux.
-- Avoid using tools that works only on Microsoft Windows. For example, to exchange data with Excel files use [GAMS Connect](https://www.gams.com/latest/docs/UG_GAMSCONNECT.html "har2gdx.exe my_harfile.har my_gdxfile.gdx") instead of `gdxxrw.exe`.
+- Respect the case of filenames (or avoid upper-case letters in filenames): filenames are case-insensitive on macOS and Microsoft Windows by default but not on Linux.
+- Avoid using tools that work only on Microsoft Windows. For example, to exchange data with Excel files, use [GAMS Connect](https://www.gams.com/latest/docs/UG_GAMSCONNECT.html "har2gdx.exe my_harfile.har my_gdxfile.gdx") instead of `gdxxrw.exe`.
 - If you cannot avoid using Windows-specific tools such as `har2gdx.exe`, test for the operating system and abort early.
 
 ``` gams
@@ -526,17 +526,17 @@ Proper code organization is pivotal to the maintainability, readability, and sca
 
 Separating GAMS code into multiple files serves several practical purposes:
 
-- **Modularity**: (While not expanded upon here, modularity is a crucial aspect of many large-scale modeling projects.)
-- **Operational Efficiency**: Distinct phases of the modeling process, such as simulation runs and result extraction, benefit from being in separate files. For instance, after running simulations, you might need to compute new indicators to interpret the results more clearly. If simulations and result processing are in separate files, you can modify the latter without rerunning the former. This is also relevant for dynamic models with time-consuming baseline simulations for which the baseline simulations should be separated from the counterfactual simulations. Utilize the [save and restart feature](https://www.gams.com/45/docs/UG_SaveRestart.html) to efficiently manage state continuity across different running stages.
-- **Brevity and Clarity**: Lengthy script files can be overwhelming and difficult to navigate. Grouping related segments of code into smaller, focused files that can be included in a master file through `$include` commands helps avoid monolithic and unwieldy script files.
+- **Modularity**: While not expanded upon here, modularity is crucial to many large-scale modeling projects.
+- **Operational Efficiency**: Distinct phases of the modeling process, such as simulation runs and result extraction, benefit from being in separate files. For instance, after running simulations, you might need to compute new indicators to interpret the results more clearly. If simulations and result processing are in separate files, you can modify the latter without rerunning the former. This is also relevant for dynamic models with time-consuming baseline simulations for which the baseline simulations should be separated from the counterfactual simulations. Utilize the [save and restart feature](https://www.gams.com/45/docs/UG_SaveRestart.html) to manage state continuity across different running stages efficiently.
+- **Brevity and Clarity**: Lengthy script files can be overwhelming and challenging to navigate. Grouping related code segments into smaller, focused files that can be included in a master file through `$include` commands helps avoid monolithic and unwieldy script files.
 
 
 ### Adhering to the DRY Principle ###
 
-"Don't Repeat Yourself" (DRY) is a fundamental coding principle applicable across all programming languages, aimed at reducing redundancy. While GAMS doesn't support traditional function definitions, there are other methods to achieve DRY:
+"Don't Repeat Yourself" (DRY) is a fundamental coding principle applicable across all programming languages to reduce redundancy. While GAMS doesn't support traditional function definitions, there are other methods to achieve DRY:
 
 - Employ **macros** (`$macro`), `$include`, and `$batInclude` to eliminate code repetition.
-- Accompany these commands with **comments** to elucidate their purpose; without proper documentation, such commands can become obscure.
+- Accompany these commands with **comments** to elucidate their purpose; such commands can become obscure without proper documentation.
 
 To demonstrate applying the DRY principle in GAMS, consider the following:
 
@@ -569,17 +569,17 @@ x = %1 - %2 * %3;
 
 ## Tests ##
 
-Unlike many other programming languages, GAMS programs tend to be less conducive to unit testing because models are typically intricate and can't be easily decomposed into smaller, testable units. Despite this challenge, testing parts of the model—especially those related to calibration and certain model properties—is both feasible and crucial.
+Unlike many other programming languages, GAMS programs are less conducive to unit testing because models are typically intricate and can't be easily decomposed into smaller, testable units. Despite this challenge, testing parts of the model—especially those related to calibration and specific model properties—is feasible and crucial.
 
 ### Essential tests for GAMS models ###
 
 To ensure the reliability and accuracy of GAMS models, consider implementing the following tests:
 
-- **Summation check**: Ensure that all shares add up to 1.
+- **Summation check**: Ensure all shares add up to 1.
 - **Equilibrium confirmation**:
   - For models calibrated against an equilibrium, check that this equilibrium condition is satisfied.
 - **General equilibrium model tests**:
-  - Verify **Walras' law**, which states that the value of excess demand must be zero in an economy. For this, verify that the equation that is drop from the model still holds after a shock.
+  - Verify **Walras' law**, which states that the value of excess demand must be zero in an economy. For this, verify that the equation dropped from the model still holds after a shock.
   - Test for **homogeneity of degree zero in prices** to confirm that a change in the numeraire does not affect real variables by changing the value of the numeraire.
   - Assess **real homogeneity** as applicable, which pertains to the model's behavior when all factors are scaled up by the same proportion: this change should not lead to any change in relative prices in the absence of fixed costs and non-homothetic demand functions.
 

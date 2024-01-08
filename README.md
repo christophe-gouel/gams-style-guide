@@ -496,13 +496,15 @@ Do not use `****` in comments, because it messes up with searching for infeasibl
 
 File names should be meaningful, end in `.gms` for files that can be compiled by GAMS (possibly following a restart), and end with `.inc` for files that cannot be compiled on themselves but must be called by other files. Avoid using special characters in file names, including spaces: stick with numbers, letters, -, and _.
 
+For filenames, privilege snake\_case and kebab-case to camelCase and PascalCase to avoid problems with case-insensitive file systems (e.g., macOS or Microsoft Windows).
+
 ## Platform-independent code ##
 
 Strive to make your code platform independent:
 
-- Use `/` to separate folders, not `\` which only works on Windows.
-- Respect case of filenames (or avoid upper-case letters in filenames): filenames are case-insensitive on MacOS and Windows by default but not on Linux.
-- Avoid using tools that works only on Windows. For example, to exchange data with Excel files use [GAMS Connect](https://www.gams.com/latest/docs/UG_GAMSCONNECT.html "har2gdx.exe my_harfile.har my_gdxfile.gdx") instead of `gdxxrw.exe`.
+- Use `/` to separate folders, not `\` which only works on Microsoft Windows.
+- Respect case of filenames (or avoid upper-case letters in filenames): filenames are case-insensitive on macOS and Microsoft Windows by default but not on Linux.
+- Avoid using tools that works only on Microsoft Windows. For example, to exchange data with Excel files use [GAMS Connect](https://www.gams.com/latest/docs/UG_GAMSCONNECT.html "har2gdx.exe my_harfile.har my_gdxfile.gdx") instead of `gdxxrw.exe`.
 - If you cannot avoid using Windows-specific tools such as `har2gdx.exe`, test for the operating system and abort early.
 
 ``` gams
@@ -567,19 +569,19 @@ x = %1 - %2 * %3;
 
 ## Tests ##
 
-Unlike many other programming languages, GAMS (General Algebraic Modeling System) programs tend to be less conducive to unit testing because models are typically intricate and can't be easily decomposed into smaller, testable units. Despite this challenge, testing parts of the model—especially those related to calibration and certain model properties—is both feasible and crucial.
+Unlike many other programming languages, GAMS programs tend to be less conducive to unit testing because models are typically intricate and can't be easily decomposed into smaller, testable units. Despite this challenge, testing parts of the model—especially those related to calibration and certain model properties—is both feasible and crucial.
 
 ### Essential tests for GAMS models ###
 
 To ensure the reliability and accuracy of GAMS models, consider implementing the following tests:
 
-- **Summation Check**: Ensure that all shares add up to 1.
-- **Equilibrium Confirmation**:
+- **Summation check**: Ensure that all shares add up to 1.
+- **Equilibrium confirmation**:
   - For models calibrated against an equilibrium, check that this equilibrium condition is satisfied.
-- **General Equilibrium Model Tests**:
-  - Verify **Walras' Law**, which states that the value of excess demand must be zero in an economy.
-  - Test for **Homogeneity of Degree Zero in Prices** to confirm that a change in the numeraire does not affect real variables.
-  - Assess **Real Homogeneity** as applicable, which pertains to the model's behavior when all factors are scaled up by the same proportion: this change should not lead to any change in relative prices in the absence of fixed costs and non-homothetic demand functions.
+- **General equilibrium model tests**:
+  - Verify **Walras' law**, which states that the value of excess demand must be zero in an economy. For this, verify that the equation that is drop from the model still holds after a shock.
+  - Test for **homogeneity of degree zero in prices** to confirm that a change in the numeraire does not affect real variables by changing the value of the numeraire.
+  - Assess **real homogeneity** as applicable, which pertains to the model's behavior when all factors are scaled up by the same proportion: this change should not lead to any change in relative prices in the absence of fixed costs and non-homothetic demand functions.
 
 ### Automating tests with continuous integration ###
 

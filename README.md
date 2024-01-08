@@ -310,6 +310,8 @@ eq_p ..
   p =e= sum((i,j),
   sh_g(i,j) * p_g(i,j)**(1 - sig))**(1 / (1 - sig))
 ;
+
+* Also bad
 eq_p ..
   p =e= sum((i,j),
     sh_g(i,j) * p_g(i,j)**(1 - sig)
@@ -442,14 +444,14 @@ eq_pricegoodaftertax(s) .. pricefinalgoodaftertax(s) = (1 + taxfinalgood(s)) * p
 
 ## Case of text ##
 
-Even if GAMS is case-insensitive, use a consistent casing for GAMS commands and object names (see above for objects). For GAMS commands, the best option is to follow GAMS Studio auto-completion default: camelCase for most commands except declarations that follow BigCamelCase. Adopting GAMS Studio default will likely reduce coordination frictions inside teams and is a pretty readable option.
+Even if GAMS is case-insensitive, use a consistent casing for GAMS commands and object names (see above for objects). For GAMS commands, the best option is to follow GAMS Studio auto-completion default: camelCase for most commands except declarations that follow PascalCase. Adopting GAMS Studio default will likely reduce coordination frictions inside teams and is a pretty readable option.
 
 _Other options:_
 
 - UPPERCASE if you like it when your code YELLS AT YOU.
 - lowercase if you are too lazy to add a few upper-case letters here and there.
 
-GAMS Studio allows to configure the default auto-completion (in Settings/Editor & Log) to camelcase, UPPERCASE, and lowercase. So, adjust the default to your choice. Do not mix the choice of cases, since this would be difficult to enforce inside a team.
+GAMS Studio allows to configure the default auto-completion (in Settings/Editor & Log) to camelCase, UPPERCASE, and lowercase. So, adjust the default to your choice. Do not mix the choice of cases, since this would be difficult to enforce inside a team.
 
 ``` gams
 * Good
@@ -527,7 +529,7 @@ Proper code organization is pivotal to the maintainability, readability, and sca
 Separating GAMS code into multiple files serves several practical purposes:
 
 - **Modularity**: While not expanded upon here, modularity is crucial to many large-scale modeling projects.
-- **Operational Efficiency**: Distinct phases of the modeling process, such as simulation runs and result extraction, benefit from being in separate files. For instance, after running simulations, you might need to compute new indicators to interpret the results more clearly. If simulations and result processing are in separate files, you can modify the latter without rerunning the former. This is also relevant for dynamic models with time-consuming baseline simulations for which the baseline simulations should be separated from the counterfactual simulations. Utilize the [save and restart feature](https://www.gams.com/45/docs/UG_SaveRestart.html) to manage state continuity across different running stages efficiently.
+- **Operational Efficiency**: Distinct phases of the modeling process, such as simulation runs and result extraction, benefit from being in separate files. For instance, after running simulations, you might need to compute new indicators to interpret the results more clearly. If simulations and result processing are in separate files, you can modify the latter without rerunning the former. This is also relevant for dynamic models with time-consuming baseline simulations for which the baseline simulations should be separated from the counterfactual simulations. Utilize the [save and restart feature](https://www.gams.com/latest/docs/UG_SaveRestart.html) to manage state continuity across different running stages efficiently.
 - **Brevity and Clarity**: Lengthy script files can be overwhelming and challenging to navigate. Grouping related code segments into smaller, focused files that can be included in a master file through `$include` commands helps avoid monolithic and unwieldy script files.
 
 
@@ -542,16 +544,19 @@ To demonstrate applying the DRY principle in GAMS, consider the following:
 
 1. **Use macros**: Define macros for repetitive tasks or calculations.
     ``` gams
-	$macro m_p_laspeyres(setSum, price, benchmark) \
+    * Calculate a Laspeyres price index
+    $macro m_p_laspeyres(setSum, price, benchmark) \
       (sum(setSum, price * benchmark) / sum(setSum, benchmark)) $ sum(setSum, benchmark)
     ```
 2. **Include files**: Keep common sets, parameters, and scalars in a separate file to `$include` where needed.
     ``` gams
-    $include 'common_sets.gms'
+    * Declare sets
+    $include "common_sets.gms"
     ```
 3. **Batch includes**: Utilize `$batInclude` for repeating a sequence of commands across multiple contexts or scenarios.
     ``` gams
-    $batInclude 'scenario_setup.gms' scenario1
+    * Setup scenario 1
+    $batInclude "scenario_setup.gms" scenario1
     ```
 
 ### Files called by `$batInclude` ###

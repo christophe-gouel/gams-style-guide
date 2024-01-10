@@ -229,12 +229,12 @@ In case of long file calls (exceeding the maximum number of columns), break the 
 
 ``` gams
 * Good
-$set options "LogOption=3 output=mygamsfile.lst GDX=mygdx"
+$set options "LogOption=3 limCol=0 limRow=0 output=my_gams_file.lst GDX=my_gdx"
 $set ddparams "--method=3 --scen=0"
-$call mygamsfile.gms %options% %ddparams%
+$call my_gams_file.gms %options% %ddparams%
 
 * Bad
-$call mygamsfile.gms LogOption=3 output=mygamsfile.lst GDX=mygdx --method=3 --scen=0
+$call my_gams_file.gms LogOption=3 limCol=0 limRow=0 output=my_gams_file.lst GDX=my_gdx --method=3 --scen=0
 ```
 
 One exception is for object labels; it is OK to have long lines for labels since those are just informative text, not code.
@@ -258,15 +258,13 @@ Do not use tabs! Use 2 spaces for indentation (options available in GAMS Studio 
 * Good
 Parameters
   a
-  $$gdxLoad mygdx.gdx a
+  $$gdxLoad my_gdx.gdx a
   b
 ;
-$ifThen not %gams.logOption% == 3
-  $$ifI %system.fileSys% == UNIX  $set nullFile > /dev/null
-  $$ifI %system.fileSys% == MSNT  $set nullFile > nul
-  $$if not set nullFile $abort %system.fileSys% not recognized
+$ifThen exist my_other_gdx.gdx
+  $$gdxLoad my_other_gdx.gdx b
 $else
-  $$set nullFile
+  b = 1;
 $endIf
 
 * Bad
@@ -275,21 +273,17 @@ Parameters
 $gdxLoad mygdx.gdx a
 b
 ;
-$ifThen not %gams.logOption% == 3
-$ifI %system.fileSys% == UNIX  $set nullFile > /dev/null
-$ifI %system.fileSys% == MSNT  $set nullFile > nul
-$if not set nullFile $abort %system.fileSys% not recognized
+$ifThen exist my_other_gdx.gdx
+$$gdxLoad my_other_gdx.gdx b
 $else
-$set nullFile
+b = 1;
 $endIf
 
 * Better but also bad
-$ifThen not %gams.logOption% == 3
-$  ifI %system.fileSys% == UNIX  $set nullFile > /dev/null
-$  ifI %system.fileSys% == MSNT  $set nullFile > nul
-$  if not set nullFile $abort %system.fileSys% not recognized
+$ifThen exist my_other_gdx.gdx
+$  gdxLoad my_other_gdx.gdx b
 $else
-$  set nullFile
+  b = 1;
 $endIf
 ```
 

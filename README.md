@@ -225,6 +225,24 @@ eq_p_cpi ..
 ;
 ```
 
+Note that there is a fundamental difference between indenting after `=` in an assignment and after `=e=` (and other equation types) in an equation. Since objects can be moved around `=e=` (`supply =e= demand` is equivalent to `supply - demand =e= 0`), there is no need indentation level after `=e=`. Here is the same example as above but as an assignment rather than an equation.
+
+``` gams
+* Good
+p_cpi =
+  sum((i,j), sh_good(i,j) * p_good(i,j)**(1 - sig))**(1 / (1 - sig)) $ CES
+  + prod((i,j), p_good(i,j)**sh_good(i,j)) $ CobbDouglas
+;
+
+* Also fine
+p_cpi = sum((i,j), sh_good(i,j) * p_good(i,j)**(1 - sig))**(1 / (1 - sig)) $ CES
+      + prod((i,j), p_good(i,j)**sh_good(i,j)) $ CobbDouglas
+;
+
+* Bad
+p_cpi = sum((i,j), sh_good(i,j) * p_good(i,j)**(1 - sig))**(1 / (1 - sig)) $ CES + prod((i,j), p_good(i,j)**sh_good(i,j)) $ CobbDouglas;
+```
+
 In case of long file calls (exceeding the maximum number of columns), break the call by putting the options in compile-time variables, in a [txt parameter file](https://www.gams.com/latest/docs/UG_GamsCall.html#UG_GamsCall_SecondaryParameterFile), or in a [YAML configuration file](https://www.gams.com/latest/docs/UG_GamsCall.html#UG_GamsCall_GAMSConfigYAML).
 
 ``` gams
@@ -523,7 +541,9 @@ Proper code organization is pivotal to the maintainability, readability, and sca
 Separating GAMS code into multiple files serves several practical purposes:
 
 - **Modularity**: While not expanded upon here, modularity is crucial to many large-scale modeling projects.
-- **Operational Efficiency**: Distinct phases of the modeling process, such as simulation runs and result extraction, benefit from being in separate files. For instance, after running simulations, you might need to compute new indicators to interpret the results more clearly. If simulations and result processing are in separate files, you can modify the latter without rerunning the former. This is also relevant for dynamic models with time-consuming baseline simulations for which the baseline simulations should be separated from the counterfactual simulations. Utilize the [save and restart feature](https://www.gams.com/latest/docs/UG_SaveRestart.html) to manage state continuity across different running stages efficiently.
+- **Operational Efficiency**: Distinct phases of the modeling process, such as simulation runs and result extraction, benefit from being in separate files. For instance, after running simulations, you might need to compute new indicators to interpret the results more clearly. If simulations and result processing are in separate files, you can modify the latter without rerunning the former. This is also relevant for dynamic models with time-consuming baseline simulations for which the baseline simulations should be separated from the counterfactual simulations. This separation can be done with either of the following two approaches:
+    - At the end of the first GAMS file, dump all or all relevant objects in a GDX file (using `execute_unload` or a command line option), and in the second GAMS file load the GDX (you can declare all objects and import them with `$declareAndLoad`).
+    - Utilize the command line options [save and restart](https://www.gams.com/latest/docs/UG_SaveRestart.html) to manage state continuity across different running stages.
 - **Brevity and Clarity**: Lengthy script files can be overwhelming and challenging to navigate. Grouping related code segments into smaller, focused files that can be included in a master file through `$include` commands helps avoid monolithic and unwieldy script files.
 
 

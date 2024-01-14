@@ -595,12 +595,14 @@ Unlike many other programming languages, GAMS programs are less conducive to uni
 To ensure the reliability and accuracy of GAMS models, consider implementing the following tests:
 
 - **Summation check**: Ensure all shares add up to 1.
-- **Equilibrium confirmation**:
-  - For models calibrated against an equilibrium, check that this equilibrium condition is satisfied.
+- **Equilibrium confirmation**: For models calibrated against an equilibrium, check that this equilibrium condition is satisfied using a solve with zero iteration (`option iterLim = 0;`).
 - **General equilibrium model tests**:
-  - Verify **Walras' law**, which states that the value of excess demand must be zero in an economy. For this, verify that the equation dropped from the model still holds after a shock.
-  - Test for **homogeneity of degree zero in prices** to confirm that a change in the numeraire does not affect real variables by changing the value of the numeraire.
-  - Assess **real homogeneity** as applicable, which pertains to the model's behavior when all factors are scaled up by the same proportion: this change should not lead to any change in relative prices in the absence of fixed costs and non-homothetic demand functions.
+    - Verify **Walras' law**, which states that the value of excess demand must be zero in an economy. For this, verify that the equation dropped from the model still holds after a shock.
+    - Test for **homogeneity of degree zero in prices** to confirm that a change in the numeraire does not affect real variables by changing the value of the numeraire.
+    - Assess **real homogeneity** as applicable, which pertains to the model's behavior when all factors are scaled up by the same proportion: this change should not lead to any change in relative prices in the absence of fixed costs and non-homothetic demand functions.
+- **Baseline confirmation test**: For dynamic models, a no-shock simulation should recover the same dynamic path as simulated in the baseline.
+- **Robustness to aggregation**: Run the above tests and simple simulations with different databases by varying the number of sectors and countries. This ensures that sparsity issues (e.g., sectors with 0 production) are handle properly in the code.
+- **Results replication**: Define a reference counterfactual simulation and verify that its results are replicated after a change of code (provided that this code change was not intended to affect the results).
 
 ### Automating tests with continuous integration ###
 

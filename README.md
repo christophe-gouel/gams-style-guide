@@ -225,7 +225,7 @@ eq_p_cpi ..
 ;
 ```
 
-Note that there is a fundamental difference between indenting after `=` in an assignment and after `=e=` (and other equation types) in an equation. Since objects can be moved around `=e=` (`supply =e= demand` is equivalent to `supply - demand =e= 0`), there is no need indentation level after `=e=`. Here is the same example as above but as an assignment rather than an equation.
+Note that there is a fundamental difference between indenting after `=` in an assignment and after `=e=` (and other equation types) in an equation. Since objects can be moved around `=e=` (`supply =e= demand` is equivalent to `supply - demand =e= 0`), there is no need for an additional indentation level after `=e=`. Here is the same example as above but as an assignment rather than an equation.
 
 ``` gams
 * Good
@@ -448,10 +448,10 @@ _Other option:_ snake\_case is slightly more readable than camelCase, but occupi
 
 ``` gams
 * Good
-eq_pt_finalGood(s) .. pt_finalGood(s) = tp_finalGood(s) * p_finalGood(s);
+eq_pt_finalGood(s) .. pt_finalGood(s) =e= tp_finalGood(s) * p_finalGood(s);
 
 * Bad
-eq_pricegoodaftertax(s) .. pricefinalgoodaftertax(s) = (1 + taxfinalgood(s)) * pricefinalgood(s);
+eq_pricegoodaftertax(s) .. pricefinalgoodaftertax(s) =e= (1 + taxfinalgood(s)) * pricefinalgood(s);
 ```
 
 ## Case of text ##

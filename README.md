@@ -17,18 +17,22 @@ Do not place spaces before commas and semicolons.
 
 ### Commas ###
 
-Always put a space after a comma, except for the commas separating sets in a GAMS object and indexed functions such as `sum` but separate sets by a space in functions such as `sameAs` or declarations such as `Alias`.
+Always put a space after a comma, except for the commas separating sets (outside the declaration of multiple sets on one line).
 
 ``` gams
 * Good
-Alias (i, j);
+Sets i, r;
+Alias (i,j);
 eq_p .. p =e= sum((i,j), sh_g(i,j) * p_g(i,j)**(1 - sig))**(1 / (1 - sig));
-z(i,j) = yes $ (not sameAs(i, j));
+z(i,j) = yes $ (not sameAs(i,j));
+x = power(y, n);
 
 * Bad
-Alias (i,j);
+Sets i,r;
+Alias (i, j);
 eq_p .. p =e= sum((i, j),sh_g(i, j) * p_g(i, j)**(1 - sig))**(1 / (1 - sig));
-z(i,j) = yes $ (not sameAs(i,j));
+z(i,j) = yes $ (not sameAs(i, j));
+x = power(y,n);
 ```
 
 ### Infix operators ###
@@ -38,11 +42,11 @@ Most infix operators (`==`, `+`, `-`, `/`, `=e=`, etc.) should always be surroun
 ``` gams
 # Good
 eq_p .. p =e= sum((i,j), sh_g(i,j) * p_g(i,j)**(1 - sig))**(1 / (1 - sig));
-z(i,j) = yes $ (not sameAs(i, j));
+z(i,j) = yes $ (not sameAs(i,j));
 
 # Bad
 eq_p.. p=e=sum((i,j), sh_g(i,j)*p_g(i,j)**(1-sig))**(1/(1-sig));
-z(i,j) = yes$(not sameAs(i, j));
+z(i,j) = yes$(not sameAs(i,j));
 ```
 
 There are a few exceptions, which should never be surrounded by spaces:
@@ -181,16 +185,16 @@ Leave a blank line after each declaration block (`Alias`, `Set`, `Parameter`, `E
 
 ``` gams
 * Good
-Alias (i, j);
+Alias (i,j);
 
 eq_p .. p =e= sum((i,j), sh_g(i,j) * p_g(i,j)**(1 - sig))**(1 / (1 - sig));
 
-z(i,j) = yes $ (not sameAs(i, j));
+z(i,j) = yes $ (not sameAs(i,j));
 
 * Bad
-Alias (i, j);
+Alias (i,j);
 eq_p .. p =e= sum((i,j), sh_g(i,j) * p_g(i,j)**(1 - sig))**(1 / (1 - sig));
-z(i,j) = yes $ (not sameAs(i, j));
+z(i,j) = yes $ (not sameAs(i,j));
 ```
 
 ## Long lines ##
@@ -453,6 +457,8 @@ eq_pt_finalGood(s) .. pt_finalGood(s) =e= tp_finalGood(s) * p_finalGood(s);
 * Bad
 eq_pricegoodaftertax(s) .. pricefinalgoodaftertax(s) =e= (1 + taxfinalgood(s)) * pricefinalgood(s);
 ```
+
+In square models (`cns`), strive to associate the name of each equation to the variable it determines. This helps make sure that each variable is associated to an equation.
 
 ## Case of text ##
 

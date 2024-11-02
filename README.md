@@ -1,4 +1,4 @@
-# GAMS Style Guide #
+# GAMS Style Guide
 
 This file describes a comprehensive style guide for the [GAMS](https://www.gams.com/) (General Algebraic Modeling System) programming language. It provides a set of standards and best practices for writing clear, maintainable, and consistent code. It has been inspired by the [tidyverse style guide](https://style.tidyverse.org/) for the R programming language (with copied elements authorized by the associated [license](https://github.com/tidyverse/style/blob/main/LICENSE.md)).
 
@@ -11,11 +11,11 @@ Other available style guides for GAMS:
 
 **Author**: [Christophe Gouel](https://github.com/christophe-gouel)
 
-## Spacing ##
+## Spacing
 
 Do not place spaces before commas and semicolons.
 
-### Commas ###
+### Commas
 
 Always put a space after a comma, except for the commas separating sets (outside the declaration of multiple sets on one line).
 
@@ -35,7 +35,7 @@ z(i,j) = yes $ (not sameAs(i, j));
 x = power(y,n);
 ```
 
-### Infix operators ###
+### Infix operators
 
 Most infix operators (`==`, `+`, `-`, `/`, `=e=`, etc.) should always be surrounded by spaces. This rule also applies to `$` used for conditional assignments and to the two dots `..` used for defining equations.
 
@@ -57,7 +57,7 @@ There are a few exceptions, which should never be surrounded by spaces:
     Set t / 1*100 /;
     delta = -alpha;
     z = x**2 + y**2;
-    
+
     * Bad
     Set t / 1 * 100 /;
     delta = - alpha;
@@ -67,12 +67,12 @@ There are a few exceptions, which should never be surrounded by spaces:
     ``` gams
     * Good
     K(t+1) = (1 - delta) * K(t) + I(t);
-    
+
     * Bad
     K(t + 1) = (1 - delta) * K(t) + I(t);
     ```
 
-### Data entry with / / ###
+### Data entry with / /
 
 When entering information between `/`, leave a space around the data and before the first `/`. Keep the first `/` on the same line as the first data and the second `/` on the same line as the last data.
 
@@ -95,7 +95,7 @@ Sets
 ;
 ```
 
-### Extra spaces ###
+### Extra spaces
 
 Adding extra spaces is OK if it improves the alignment of `=` or `=e=`, and of identifiers and descriptive text.
 
@@ -117,7 +117,7 @@ Sets
 ;
 ```
 
-### Parentheses ###
+### Parentheses
 
 Do not put spaces inside or outside parentheses, except for the above reasons.
 
@@ -157,7 +157,7 @@ else
 );
 ```
 
-### Use at most one statement per line ###
+### Use at most one statement per line
 
 A general rule is that there should not be 2 (or more) semicolons per line. Two exceptions are short flow control operations if they fit on one line and bounds setting for a given variable.
 
@@ -179,7 +179,7 @@ x.lo = -inf; x.up = inf;
 y = 1; z = 2;
 ```
 
-## Blank lines ##
+## Blank lines
 
 Leave a blank line after each declaration block (`Alias`, `Set`, `Parameter`, `Equation`, and `Model`) and after each equation (for space reasons, this recommendation is not followed in the other examples of this guide).
 
@@ -197,7 +197,7 @@ eq_p .. p =e= sum((i,j), sh_g(i,j) * p_g(i,j)**(1 - sig))**(1 / (1 - sig));
 z(i,j) = yes $ (not sameAs(i,j));
 ```
 
-## Long lines ##
+## Long lines
 
 Strive to limit your code to 90 characters per line. This size fits comfortably on  half a laptop screen with a reasonably sized font (which allows you to compare 2 files side by side or to have a running process along your code).
 
@@ -272,7 +272,7 @@ $macro m_p_laspeyres(setSum, price, benchmark) \
 $macro m_p_laspeyres(setSum, price, benchmark) (sum(setSum, price * benchmark) / sum(setSum, benchmark)) $ sum(setSum, benchmark)
 ```
 
-## Indentation ##
+## Indentation
 
 Do not use tabs! Use 2 spaces for indentation (options available in GAMS Studio in Settings/Editor & Log). Indent also dollar control options if needed, which can be done by using the symbols `$$`:
 
@@ -283,11 +283,6 @@ Parameters
   $$gdxLoad my_gdx.gdx a
   b
 ;
-$ifThen exist my_other_gdx.gdx
-  $$gdxLoad my_other_gdx.gdx b
-$else
-  b = 1;
-$endIf
 
 * Bad
 Parameters
@@ -295,6 +290,21 @@ Parameters
 $gdxLoad mygdx.gdx a
 b
 ;
+```
+
+### Dollar control options
+
+Indentation with dollar control options can be tricky, so indentation rules have to be adapted for readability and consistency with respect to the surrounding code. In the first example, standard indentation is applied.
+
+``` gams
+* Good
+$ifThen exist my_other_gdx.gdx
+  $$gdxLoad my_other_gdx.gdx b
+$else
+  b = 1;
+$endIf
+
+* Bad
 $ifThen exist my_other_gdx.gdx
 $$gdxLoad my_other_gdx.gdx b
 $else
@@ -309,7 +319,31 @@ $else
 $endIf
 ```
 
-### Nested indents ###
+In the second example, it is better to keep the surrounding indentation.
+
+``` gams
+* Good
+Model mymodel
+  / eq_a
+    eq_b
+$ifThen %add_eq%
+    eq_c
+$endIf
+    Eq_d /
+;
+
+* Bad
+Model mymodel
+  / eq_a
+    eq_b
+$ifThen %add_eq%
+      eq_c
+$endIf
+    eq_d /
+;
+```
+
+### Nested indents
 
 Use nested indentation if inside parentheses, and indent the closing parentheses at the same indentation level as that of the opening parentheses.
 
@@ -335,7 +369,7 @@ eq_p ..
 ;
 ```
 
-### Data entry with / / ###
+### Data entry with / /
 
 If the data entry is too long to be kept on the same line as the declaration, use another line and indent by an additional level before the first `/`.
 
@@ -354,7 +388,7 @@ Set
 
 ```
 
-## Declaration statement ##
+## Declaration statement
 
 When declaring new identifiers (sets, parameters, variables, and equations), the keywords (`Set`, `Parameter`, etc.) should be on a different line from the identifiers (except if there is only one identifier and its line does not exceed the maximum number of characters), each identifier shall be indented and on its line. The semicolon should be on its own, non-indented line.
 
@@ -379,19 +413,19 @@ Parameter p Price;
 p(i) = 1;
 ```
 
-### Pluralize ###
+### Pluralize
 
 GAMS has singular and plural forms for all declarations (`Set` and `Sets`, `Parameter` and `Parameters`, `Variable` and `Variables`, etc.). Use plural forms if declaring several identifiers.
 
-### Universal set ###
+### Universal set
 
 Avoid using the universal set `(*)`, especially for data input and parameters and variables entering models. It is acceptable to use the universal set for reporting results.
 
-### Careful use of `$onMulti` ###
+### Careful use of `$onMulti`
 
 `$onMulti` allows to declare several times the same symbol. This should be used only locally, for well-motivated cases, and always be followed by `$offMulti`.
 
-## Parentheses ##
+## Parentheses
 
 Refrain from using unbalanced parentheses in comments because doing so messes up with rainbow parentheses in code editors and parentheses matching.
 
@@ -413,7 +447,7 @@ p_cpi = sum(i, a(i) * p(i)**(1 - sig))**(1 / (1 - sig));
 p_cpi = sum(i, a(i) * p(i)**(1 - sig))**[1 / (1 - sig)];
 ```
 
-## Naming ##
+## Naming
 
 For large models for which it is not always possible to follow precisely the object names used in the model description, compose object names in two parts: a type and an explicit name separated by an underscore. The type should not necessarily follow GAMS object types (variables, parameters, ...) because the distinction between variables and parameters can be blurry depending on the simulations. It is better to use types that refer to what kind of objects are represented (prices, elasticities, shares, ...). One exception for the use of types is for sets. Since sets are used a lot, it is better to save space by not adding a type in front of their name. So, the only objects without a type are the sets.
 
@@ -460,7 +494,7 @@ eq_pricegoodaftertax(s) .. pricefinalgoodaftertax(s) =e= (1 + taxfinalgood(s)) *
 
 In square models (`cns`), strive to associate the name of each equation to the variable it determines. This helps make sure that each variable is associated to an equation.
 
-## Case of text ##
+## Case of text
 
 Even if GAMS is case-insensitive, use a consistent casing for GAMS commands and object names (see above for objects). For GAMS commands, the best option is to follow GAMS Studio auto-completion default: camelCase for most commands except declarations that follow PascalCase. Adopting GAMS Studio default will likely reduce coordination frictions inside teams and is a pretty readable option.
 
@@ -485,7 +519,7 @@ p_cpi.L = 1;
 
 If you are worried that lower-case `l` could be confused with `1`, adopt a good programming font such as [Fira Code](https://github.com/tonsky/FiraCode) or [JetBrains Mono](https://www.jetbrains.com/fr-fr/lp/mono/).
 
-## Semicolons ##
+## Semicolons
 
 Place semicolons at the end of a code block without adding a space before it. If the code block spans several lines, place the semicolon on its line as the first character.
 
@@ -502,23 +536,23 @@ eq_p ..
 
 The semicolon at the end of a statement can be omitted if a new GAMS keyword follows. Do not use this option because the resulting code would be less readable, and errors could be introduced if a different type of statement replaces the keyword.
 
-## Quotes ##
+## Quotes
 
 Use `"`, not `'` for quoting text or set elements. The only exception is when the text already contains double quotes and no single quote.
 
-## Comments ##
+## Comments
 
 Use `#` for end-of-line comments for compatibility with Python and R, two languages with which GAMS is commonly used. Leave a space after `*` and `#`, and leave a space before the end-of-line comment.
 
 Do not use `****` in comments because it messes up with searching for infeasible equations that are indicated by the same character string.
 
-## File names ##
+## File names
 
 File names should be meaningful, end in `.gms` for files that can be compiled by GAMS (possibly following a restart), and end with `.inc` for files that cannot be compiled on themselves but must be called by other files. Avoid using special characters in file names, including spaces: stick with numbers, letters, -, and _.
 
 For filenames, privilege snake\_case and kebab-case to camelCase and PascalCase to avoid problems with case-insensitive file systems (e.g., macOS or Microsoft Windows).
 
-## Platform-independent code ##
+## Platform-independent code
 
 Strive to make your code platform-independent:
 
@@ -538,11 +572,11 @@ $include my_folder\my_file.inc
 $call "har2gdx.exe my_harfile.har my_gdxfile.gdx"
 ```
 
-## Code organization ##
+## Code organization
 
 Proper code organization is pivotal to the maintainability, readability, and scalability of GAMS projects.
 
-### Organizing Code into Separate Files ###
+### Organizing Code into Separate Files
 
 Separating GAMS code into multiple files serves several practical purposes:
 
@@ -553,7 +587,7 @@ Separating GAMS code into multiple files serves several practical purposes:
 - **Brevity and Clarity**: Lengthy script files can be overwhelming and challenging to navigate. Grouping related code segments into smaller, focused files that can be included in a master file through `$include` commands helps avoid monolithic and unwieldy script files.
 
 
-### Adhering to the DRY Principle ###
+### Adhering to the DRY Principle
 
 "Don't Repeat Yourself" (DRY) is a fundamental coding principle applicable across all programming languages to reduce redundancy. While GAMS doesn't support traditional function definitions, there are other methods to achieve DRY:
 
@@ -579,7 +613,7 @@ To demonstrate applying the DRY principle in GAMS, consider the following:
     $batInclude "scenario_setup.gms" scenario1
     ```
 
-### Files called by `$batInclude` ###
+### Files called by `$batInclude`
 
 Files called by `$batInclude` should have named arguments rather than the default names. Use `$setArgs` to define the names.
 
@@ -592,11 +626,11 @@ x = %aa% - %bb% * %cc%;
 x = %1 - %2 * %3;
 ```
 
-## Tests ##
+## Tests
 
 Unlike many other programming languages, GAMS programs are less conducive to unit testing because models are typically intricate and can't be easily decomposed into smaller, testable units. Despite this challenge, testing parts of the model—especially those related to calibration and specific model properties—is feasible and crucial.
 
-### Essential tests for GAMS models ###
+### Essential tests for GAMS models
 
 To ensure the reliability and accuracy of GAMS models, consider implementing the following tests:
 
@@ -610,12 +644,12 @@ To ensure the reliability and accuracy of GAMS models, consider implementing the
 - **Robustness to aggregation**: Run the above tests and simple simulations with different databases by varying the number of sectors and countries. This ensures that sparsity issues (e.g., sectors with 0 production) are handle properly in the code.
 - **Results replication**: Define a reference counterfactual simulation and verify that its results are replicated after a change of code (provided that this code change was not intended to affect the results).
 
-### Automating tests with continuous integration ###
+### Automating tests with continuous integration
 
 Leveraging continuous integration tools enables the automation of these tests, ensuring they are executed upon each new commit. A practical guide to using continuous integration with GAMS is available in this [blog post](https://www.gams.com/blog/2023/08/modern-gams-teaching-gams-with-github-classroom/), which illustrates how to apply these principles for student models. This automated approach is also scalable to larger models.
 
 With the [GAMS Docker image](https://hub.docker.com/r/gams/gams), it's possible to spin up a new GAMS instance for each commit. This allows for the execution of tests on a simpler model variant, providing immediate feedback regarding the model’s expected behavior. By incorporating this into your testing workflow, you can significantly enhance the maintainability and quality of your GAMS programs.
 
-## License ##
+## License
 
 This work is licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/?ref=chooser-v1)

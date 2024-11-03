@@ -253,10 +253,10 @@ In case of long file calls (exceeding the maximum number of columns), break the 
 * Good
 $set options "LogOption=3 limCol=0 limRow=0 output=my_gams_file.lst GDX=my_gdx"
 $set ddparams "--method=3 --scen=0"
-$call my_gams_file.gms %options% %ddparams%
+$call gams my_gams_file.gms %options% %ddparams%
 
 * Bad
-$call my_gams_file.gms LogOption=3 limCol=0 limRow=0 output=my_gams_file.lst GDX=my_gdx --method=3 --scen=0
+$call gams my_gams_file.gms LogOption=3 limCol=0 limRow=0 output=my_gams_file.lst GDX=my_gdx --method=3 --scen=0
 ```
 
 One exception is for object labels; it is OK to have long lines for labels since those are just informative text, not code.
@@ -417,13 +417,23 @@ p(i) = 1;
 
 GAMS has singular and plural forms for all declarations (`Set` and `Sets`, `Parameter` and `Parameters`, `Variable` and `Variables`, etc.). Use plural forms if declaring several identifiers.
 
+### Careful use of `$onMulti`
+
+`$onMulti` allows to declare several times the same symbol. This should be used only locally, for well-motivated cases, and always be followed by `$offMulti`.
+
+## Domain checking
+
+To avoid data problems, rely on GAMS [domain checking](https://www.gams.com/latest/docs/UG_SetDefinition.html#INDEX_domain_21_checking). It is automatic, but two cases require attention.
+
 ### Universal set
 
 Avoid using the universal set `(*)`, especially for data input and parameters and variables entering models. It is acceptable to use the universal set for reporting results.
 
-### Careful use of `$onMulti`
+### Loading from GDX files
 
-`$onMulti` allows to declare several times the same symbol. This should be used only locally, for well-motivated cases, and always be followed by `$offMulti`.
+When loading data from a GDX file, the `$load` command automatically filters domain violations without raising a compilation error. To avoid this behavior, consider using instead one of the `$loadDC*` commands or activate domain checking for `$load` using `$offFiltered`.
+
+If the filtering of domain violations is the intended behavior, use `$loadFiltered` for clarity.
 
 ## Parentheses
 
@@ -576,7 +586,7 @@ $call "har2gdx.exe my_harfile.har my_gdxfile.gdx"
 
 Proper code organization is pivotal to the maintainability, readability, and scalability of GAMS projects.
 
-### Organizing Code into Separate Files
+### Organizing code into separate files
 
 Separating GAMS code into multiple files serves several practical purposes:
 
@@ -587,7 +597,7 @@ Separating GAMS code into multiple files serves several practical purposes:
 - **Brevity and Clarity**: Lengthy script files can be overwhelming and challenging to navigate. Grouping related code segments into smaller, focused files that can be included in a master file through `$include` commands helps avoid monolithic and unwieldy script files.
 
 
-### Adhering to the DRY Principle
+### Adhering to the DRY principle
 
 "Don't Repeat Yourself" (DRY) is a fundamental coding principle applicable across all programming languages to reduce redundancy. While GAMS doesn't support traditional function definitions, there are other methods to achieve DRY:
 

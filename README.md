@@ -40,11 +40,11 @@ x = power(y,n);
 Most infix operators (`==`, `+`, `-`, `/`, `=e=`, etc.) should always be surrounded by spaces. This rule also applies to `$` used for conditional assignments and to the two dots `..` used for defining equations.
 
 ``` gams
-# Good
+* Good
 eq_p .. p =e= sum((i,j), sh_g(i,j) * p_g(i,j)**(1 - sig))**(1 / (1 - sig));
 z(i,j) = yes $ (not sameAs(i,j));
 
-# Bad
+* Bad
 eq_p.. p=e=sum((i,j), sh_g(i,j)*p_g(i,j)**(1-sig))**(1/(1-sig));
 z(i,j) = yes$(not sameAs(i,j));
 ```
@@ -100,7 +100,7 @@ Sets
 Adding extra spaces is OK if it improves the alignment of `=` or `=e=`, and of identifiers and descriptive text.
 
 ``` gams
-# Good
+* Good
 total = a + b + c;
 mean  = (a + b + c) / n;
 Sets
@@ -108,7 +108,7 @@ Sets
   rawmateral "source of raw materials"
 ;
 
-# Also fine
+* Also fine
 total = a + b + c;
 mean = (a + b + c) / n;
 Sets
@@ -132,7 +132,7 @@ p_cpi = sum (i, a(i) * p(i)**(1 - sig))**(1 / (1 - sig) );
 There is one exception: place a space before `()` when used with flow control operations `if`, `for`, `loop`, or `while`.
 
 ``` gams
-# Good
+* Good
 for (i = 1 to 1000 by 10,
   display i;
 );
@@ -144,7 +144,7 @@ else
   y = 3;
 );
 
-# Bad
+* Bad
 for(i = 1 to 1000 by 10,
   display i;
 );
@@ -624,6 +624,27 @@ x = %aa% - %bb% * %cc%;
 
 * Bad
 x = %1 - %2 * %3;
+```
+
+### Code options
+
+Aim to gather most code options and switches at the top of the model file. This includes dollar control options (e.g., `$onFiltered`), compile-time variables defined by `$set*` commands, and standard options defined by the `option` statement. For options that could be unclear for the other users, add a small comment. Use a separate line for each option.
+
+``` gams
+* Good
+$eolCom #
+$offFiltered # Ensure domain checking for all gdx load operations
+
+options
+  limRow = 0
+  limCol = 0
+  solveLink = 5 # Pass model instance in-memory
+;
+
+* Bad
+$offFiltered eolCom #
+
+option limRow = 0, limCol = 0, solveLink = 5;
 ```
 
 ## Tests

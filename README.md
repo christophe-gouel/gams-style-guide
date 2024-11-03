@@ -7,7 +7,7 @@ This guide is necessarily opinionated in order to provide consistency. Feel free
 Other available style guides for GAMS:
 
 - [MIT JPSPGC style guide](https://github.com/mit-jp/style-guides)
-- [Good coding practices from GAMS documentation](https://www.gams.com/latest/docs/UG_GoodPractices.html), based on [Bruce McCarl's recommendations](https://www.gams.com/mccarlGuide/formatting_models_-_my_recommendations.htm)
+- [Good coding practices from GAMS documentation](https://www.gams.com/latest/docs/UG_GoodPractices.html), based on [Bruce McCarl's recommendations](https://forum.gams.com/uploads/short-url/6uUbctQlicqZdLM4PP1ZdQxhE2n.pdf)
 
 **Author**: [Christophe Gouel](https://github.com/christophe-gouel)
 

@@ -37,7 +37,7 @@ x = power(y,n);
 
 ### Infix operators
 
-Most infix operators (`==`, `+`, `-`, `/`, `=e=`, etc.) should always be surrounded by spaces. This rule also applies to `$` used for conditional assignments and to the two dots `..` used for defining equations.
+Most infix operators (`=`, `+`, `-`, `/`, `=e=`, etc.) should always be surrounded by spaces. This rule also applies to `$` used for conditional assignments and to the two dots `..` used for defining equations.
 
 ``` gams
 * Good
@@ -581,6 +581,10 @@ $call "har2gdx.exe my_harfile.har my_gdxfile.gdx"
 $include my_folder\my_file.inc
 $call "har2gdx.exe my_harfile.har my_gdxfile.gdx"
 ```
+
+## Logical conditions
+
+Be consistent in logical conditions: use either operators (`<=`, `<>`, etc.) or text (`le`, `ne`, etc.), but avoid mixing them. Since operators are more quickly readable, they are a better default.
 
 ## Code organization
 
